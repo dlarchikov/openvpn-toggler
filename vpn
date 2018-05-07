@@ -1,0 +1,36 @@
+#!/bin/bash
+# Version 1.1
+# @dlarchikov
+
+action="$1"
+
+if [[ $action = '' ]]; then
+	echo "Action required.\n" $action
+	exit 2
+fi
+
+if [[ $action != 'run' && $action != 'stop' ]]; then
+	echo "Action invalid"
+	exit 2
+fi
+
+echo "Run action \"$1\""
+
+if [[ $action = 'run' ]]
+then
+	openvpn --config /root/client.ovpn &
+fi
+
+if [[ $action = 'stop' ]]
+then
+	ps_row=`ps auwx | grep openvpn | grep -v grep`
+
+	if [[ $ps_row != "" && `echo $ps_row | wc -l` -gt 0 ]]
+	then
+		pid=`echo $ps_row | cut -d' ' -f2`
+		echo "PID: $pid"
+		kill -9 $pid
+	else
+		echo "VPN already dead"
+	fi
+fi
