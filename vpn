@@ -1,5 +1,5 @@
 #!/bin/bash
-# Version 1.1
+# Version 1.2
 # @dlarchikov
 
 action="$1"
@@ -9,14 +9,14 @@ if [[ $action = '' ]]; then
 	exit 2
 fi
 
-if [[ $action != 'run' && $action != 'stop' ]]; then
+if [[ $action != 'run' && $action != 'start' && $action != 'stop' ]]; then
 	echo "Action invalid"
 	exit 2
 fi
 
 echo "Run action \"$1\""
 
-if [[ $action = 'run' ]]
+if [[ $action = 'run' || $action = 'start' ]]
 then
 	openvpn --config /root/client.ovpn &
 fi
